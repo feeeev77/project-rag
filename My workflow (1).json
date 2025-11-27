@@ -1,0 +1,140 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "841b4345-7b67-4804-ab0a-6939072b4467",
+      "name": "Telegram Trigger",
+      "webhookId": "30270a46-bc8b-45f3-895a-d7c4e9a8f728",
+      "credentials": {
+        "telegramApi": {
+          "id": "ypwH9FXwVP5TyOlb",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=Bertindaklah sebagai asisten yang ramah dan helpful, berbicara seperti teman yang baik. Gunakan bahasa santai namun tetap sopan. Berikan penjelasan dengan langkah-langkah yang mudah diikuti.\n\nSapalah pengunjung dengan namanya {{ $json.message.chat.first_name }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5847929c-b4fa-4574-9a69-a58485f5407a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "dd5acfe2-a818-4a0c-bf24-b931d59930c5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "hGiCPES5JczFA6R3",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "1a7b1148-ce96-4277-abf0-8eca95b09e00",
+      "name": "Send a text message",
+      "webhookId": "2eb43966-c958-4ff2-a5cf-f43a7fc26d51",
+      "credentials": {
+        "telegramApi": {
+          "id": "ypwH9FXwVP5TyOlb",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9741038d-e8e9-4a78-b575-04150b23ebdf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "644bf29a92e1ca282645b05f0ab7acbe12c43f58e6a4423d969f9196049d0525"
+  },
+  "id": "LNWKKNA2PLlTQQ4c",
+  "tags": []
+}
