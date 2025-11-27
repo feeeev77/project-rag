@@ -1,0 +1,107 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "88f848d3-f067-4967-b35f-c8537ae4b5bf",
+      "name": "Telegram Trigger",
+      "webhookId": "ffacc980-dc30-4aee-9e69-85e1838878dc",
+      "credentials": {
+        "telegramApi": {
+          "id": "Qn6klUua4Ldmtt7T",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "id"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $json[\"message\"][\"text\"] }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        112,
+        96
+      ],
+      "id": "e7cfda9d-5db3-44f6-9e04-73068202515a",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "e2svfWfmxveOz5GZ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json[\"message\"][\"chat\"][\"id\"] }}",
+        "text": "={{ $json[\"choices\"][0][\"message\"][\"content\"] }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        352,
+        96
+      ],
+      "id": "59b6f1fa-58a7-4f77-a42e-6c9a27017c11",
+      "name": "Send a text message",
+      "webhookId": "4777ff02-0fa1-47a8-9c01-42acac035d8c",
+      "credentials": {
+        "telegramApi": {
+          "id": "Qn6klUua4Ldmtt7T",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b63419af-5b6d-43a7-8644-875dd29c1985",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "074476de2a944c1ee4970a20ec2728be9a3289c56c83bc040042b12ff19b3572"
+  },
+  "id": "wWNayadjwBgN5jN6",
+  "tags": []
+}
