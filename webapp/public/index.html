@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Workflow 2 WebApp</title>
+</head>
+<body>
+    <h2>WebApp → n8n → OpenAI</h2>
+
+    <input id="question" placeholder="Tulis pertanyaan..." size="40">
+    <button onclick="ask()">Kirim</button>
+
+    <p id="answer"></p>
+
+    <script>
+        async function ask() {
+            const q = document.getElementById("question").value;
+
+            const res = await fetch("/ask", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ question: q })
+            });
+
+            const data = await res.json();
+            document.getElementById("answer").textContent = data.answer;
+        }
+    </script>
+</body>
+</html>
