@@ -1,3 +1,4 @@
+//Penjelasan Alur Data//
 User mengisi pertanyaan di WebApp lokal
 Pengguna mengetik pertanyaan pada form di halaman WebApp (Next.js / Node.js / Flask).
 
