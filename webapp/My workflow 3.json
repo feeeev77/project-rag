@@ -1,0 +1,153 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "7a15924f-c7d9-4a64-9e99-38c9c6840270",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ab7a8850-a75c-46fd-8b29-557b6fd18674",
+      "name": "Webhook",
+      "webhookId": "7a15924f-c7d9-4a64-9e99-38c9c6840270"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{$json.body.question}}\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "be7c004e-1b0d-40f8-94f3-4a81a041fead",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "hGiCPES5JczFA6R3",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"answer\": \"={{$json.output[0].content[0].text}}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        560,
+        0
+      ],
+      "id": "a1d989b1-6f33-4f23-b7cf-ca2f1cb1faff",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {
+    "Message a model": [
+      {
+        "json": {
+          "output": [
+            {
+              "id": "msg_07df34e33df2cccf0069307c4f8004819daac62b978a119980",
+              "content": [
+                {
+                  "annotations": [],
+                  "text": "Hi — it looks like your message was empty. How can I help you today?\n\nHere are some things I can do (pick one or tell me your own):\n- Answer questions or explain concepts\n- Draft or edit emails, essays, or code\n- Debug code or review snippets (paste code)\n- Summarize or rewrite text (paste text or upload a file)\n- Translate or proofread\n- Create plans, checklists, or schedules\n- Analyze images (attach the image)\n- Brainstorm ideas or provide research\n\nWhat would you like to do?",
+                  "type": "output_text",
+                  "logprobs": []
+                }
+              ],
+              "role": "assistant",
+              "status": "completed",
+              "type": "message"
+            }
+          ]
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "calcaneal-noncarnivorously-taina.ngrok-free.dev",
+            "user-agent": "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7019",
+            "content-length": "35",
+            "content-type": "application/json",
+            "expect": "100-continue",
+            "x-forwarded-for": "149.113.76.46",
+            "x-forwarded-host": "calcaneal-noncarnivorously-taina.ngrok-free.dev",
+            "x-forwarded-proto": "https",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "question": "halo dari PowerShell"
+          },
+          "webhookUrl": "https://calcaneal-noncarnivorously-taina.ngrok-free.dev/webhook-test/7a15924f-c7d9-4a64-9e99-38c9c6840270",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ebb5c90f-96a4-428e-84a6-fa2b8e70288e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "644bf29a92e1ca282645b05f0ab7acbe12c43f58e6a4423d969f9196049d0525"
+  },
+  "id": "cAxxOG6ix54ecZIS",
+  "tags": []
+}
